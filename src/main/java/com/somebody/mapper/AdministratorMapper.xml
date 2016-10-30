@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.somebody.mapper.AdministratorMapper">
+
+	<insert id="add" parameterType="com.somebody.po.Administrator">
+		insert into administrator values(#{name} , #{password})
+	</insert>
+	
+	<select id="selectByNameAndPassword" parameterType="com.somebody.po.Administrator" resultType="com.somebody.po.Administrator">
+		select name , password from administrator where name = #{name} and password = #{password}
+	</select>
+	
+	<update id = "updatePassword" parameterType = "com.somebody.po.Administrator">
+		update administrator set password = #{password}  where name = #{name}
+	</update>
+	
+	<select id = "selectPasswordByName" parameterType="java.lang.String" resultType="java.lang.String">
+		select password from administrator where name = #{name}
+	</select>
+	
+</mapper>

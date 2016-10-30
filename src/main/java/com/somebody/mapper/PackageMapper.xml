@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.somebody.mapper.PackageMapper">
+	<resultMap id="BaseResultMap" type="com.somebody.po.Package">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="INTEGER" />
+		<result column="detailDescribe" property="detailDescribe"
+			jdbcType="VARCHAR" />
+		<result column="isSale" property="isSale" jdbcType="CHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, price, detailDescribe, isSale
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from package
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from package
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.somebody.po.Package">
+		insert into package (id, name, price,
+		detailDescribe, isSale)
+		values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR},
+		#{price,jdbcType=INTEGER},
+		#{detailDescribe,jdbcType=VARCHAR}, #{isSale,jdbcType=CHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.somebody.po.Package">
+		insert into package
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="detailDescribe != null">
+				detailDescribe,
+			</if>
+			<if test="isSale != null">
+				isSale,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=INTEGER},
+			</if>
+			<if test="detailDescribe != null">
+				#{detailDescribe,jdbcType=VARCHAR},
+			</if>
+			<if test="isSale != null">
+				#{isSale,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.somebody.po.Package">
+		update package
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=INTEGER},
+			</if>
+			<if test="detailDescribe != null">
+				detailDescribe = #{detailDescribe,jdbcType=VARCHAR},
+			</if>
+			<if test="isSale != null">
+				isSale = #{isSale,jdbcType=CHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.somebody.po.Package">
+		update package
+		set name = #{name,jdbcType=VARCHAR},
+		price = #{price,jdbcType=INTEGER},
+		detailDescribe = #{detailDescribe,jdbcType=VARCHAR},
+		isSale = #{isSale,jdbcType=CHAR}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<!-- list -->
+	<select id="list" resultType="com.somebody.po.Package">
+		select * from package
+	</select>
+
+	<select id="query" parameterType="com.somebody.vo.PackageQueryCondition"
+		resultType="com.somebody.po.Package">
+		select id , name , price , detaildescribe as 'detailDescribe' from package 
+		<where>
+			<if test="keyword != null and keyword != ''">
+				name like #{keyword}
+			</if>
+		</where>
+		limit ${(page-1)*10}, 10
+	</select>
+
+	<select id="count" resultType="java.lang.Integer" parameterType="com.somebody.vo.PackageQueryCondition" >
+		select count(*) from package
+		<where>
+			<if test="keyword != null and keyword != ''">
+				name like #{keyword}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectPackageIDAndName" resultType="com.somebody.po.Package">
+		select id , name from package
+	</select>
+
+</mapper>
